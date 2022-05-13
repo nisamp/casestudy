@@ -1,0 +1,7 @@
+- hosts: windows
+  gather_facts: true
+  tasks:
+    - name: Install git using win_chocolatey
+      win_chocolatey:
+        name: git
+        state: present      

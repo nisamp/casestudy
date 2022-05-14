@@ -19,5 +19,5 @@
         state: present
     - name: Copy SSH public key to host
       win_copy:
-        src:  C:\Users\nizam\.ssh\id_rsa.pub
+        src:  /cygdrive/c/Users/nizam/.ssh/id_rsa.pub
         dest: C:\ProgramData\ssh\authorized_keys    

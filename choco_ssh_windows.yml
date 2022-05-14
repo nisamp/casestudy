@@ -9,6 +9,7 @@
     - name: Install Open SSH for SSH connection
       win_chocolatey:
         name: openssh
+        package_params: /SSHServerFeature
         state: present 
     - name: set the default shell to PowerShell
       win_regedit:

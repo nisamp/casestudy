@@ -1,0 +1,19 @@
+- name: Install Chocolatey/SSH/Git
+  hosts: windows
+  gather_facts: false
+  tasks:
+    - name: Install Chocolatey Windows Package Manager
+      win_chocolatey:
+        name: chocolatey
+        state: present      
+    - name: Install Open SSH for SSH connection
+      win_chocolatey:
+        name: openssh
+        state: present 
+    - name: set the default shell to PowerShell
+      win_regedit:
+        path: HKLM:\SOFTWARE\OpenSSH
+        name: DefaultShell
+        data: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+        type: string
+        state: present

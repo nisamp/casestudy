@@ -1,9 +1,0 @@
-- hosts: windows
-  gather_facts: true
-  tasks:
-    - name: Install Chocolatey Windows Package Manager using Ansible
-      win_chocolatey:
-        name: 
-         - chocolatey
-         - chocolatey-core.extension
-        state: present      

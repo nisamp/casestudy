@@ -6,7 +6,7 @@
       win_chocolatey:
         name: chocolatey
         state: present
-    - name: Install Git
+    - name: Install Git using Chocolatey
       win_chocolatey:
         name: git
         state: present
@@ -16,24 +16,22 @@
         package_params: /SSHServerFeature
         state: present
       tags: openssh
-    - name: Copy SSH public key to host
-      win_copy:
-        src:  /cygdrive/c/Users/nizam/.ssh/id_rsa.pub
-        dest: C:\ProgramData\ssh\administrators_authorized_keys 
+    - name: Set up authorised key file
+      win_lineinfile:
+        path: C:\ProgramData\ssh\administrators_authorized_keys
+        line: "{{ lookup('file', '/cygdrive/c/Users/nizam/.ssh/id_rsa.pub') }}"
+        create: Yes
       tags: openssh
-
     - name: Disable inheritence
       win_acl_inheritance:
         path: C:\ProgramData\ssh\administrators_authorized_keys
         state: absent
       tags: openssh
-
     - name: Set the owner on the authorised keys file.
       win_owner:
         path: C:\ProgramData\ssh\administrators_authorized_keys
         user: "{{ ansible_hostname }}\\Administrators"
       tags: openssh
-
     - name: Don't allow users to view the file
       win_acl:
         path: C:\ProgramData\ssh\administrators_authorized_keys
@@ -42,7 +40,6 @@
         type: allow
         state: absent
       tags: openssh
-
     - name: Do allow admins to access the file
       win_acl:
         path: C:\ProgramData\ssh\administrators_authorized_keys

@@ -17,11 +17,11 @@
         name: openssh
         params: /SSHServerFeature /KeyBasedAuthenticationFeature
 
-    - name: Disable common authorized key file for administrators group in sshd_config
+    - name: Enable PubkeyAuthentication yes in sshd_config
       win_lineinfile:
         path: '%ProgramData%\ssh\sshd_config'
-        regexp: 'AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys'
-        line: '# AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys'
+        regexp: '#PubkeyAuthentication yes'
+        line: 'PubkeyAuthentication yes'
 
     - name: Configure and enable SSH on standard port 
       win_firewall_rule:

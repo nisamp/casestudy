@@ -1,5 +1,5 @@
 [windows]
-windows10 ansible_host=192.168.1.7
+192.168.1.7
 
 [windows:vars]
 ansible_user=ansible

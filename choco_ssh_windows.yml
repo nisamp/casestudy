@@ -45,23 +45,4 @@
     - name: Set the owner on the authorised keys file.
       win_owner:
         path: C:\ProgramData\ssh\administrators_authorized_keys
-        user: "{{ ansible_hostname }}\\Administrators"
-
-    - name: Don't allow users to view the file
-      win_acl:
-        path: C:\ProgramData\ssh\administrators_authorized_keys
-        user: "Authenticated Users"
-        rights: Read,Write,Modify,FullControl,Delete
-        type: allow
-        state: absent
-
-    - name: Do allow admins to access the file
-      win_acl:
-        path: C:\ProgramData\ssh\administrators_authorized_keys
-        user: "{{ item }}"
-        rights: FullControl
-        type: allow
-        state: present
-      with_items:
-        - SYSTEM
-        - "{{ ansible_hostname }}\\Administrators"
+        user: "{{ ansible_hostname }}\\ansible"

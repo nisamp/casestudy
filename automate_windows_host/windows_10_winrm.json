@@ -1,0 +1,54 @@
+{
+    "builders": [
+      {
+        "boot_wait": "2m",
+        "disk_size": "{{user `disk_size`}}",
+        "floppy_files": [
+          "{{user `autounattend`}}"
+        ],
+        "guest_os_type": "Windows10_64",
+        "headless": "{{user `headless`}}",
+        "iso_checksum": "{{user `iso_checksum_type`}}:{{user `iso_checksum`}}",
+        "iso_url": "{{user `iso_url`}}",
+        "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+        "ssh_password": "Ansible123",
+        "ssh_timeout": "2h",
+        "ssh_username": "Ansible",
+        "type": "virtualbox-iso",
+        "vboxmanage": [
+          [
+            "modifyvm",
+            "{{.Name}}",
+            "--memory",
+            "{{user `memory_size`}}"
+          ],
+          [
+            "modifyvm",
+            "{{.Name}}",
+            "--cpus",
+            "{{user `cpus`}}"
+          ]
+        ]
+      }
+    ],
+    "provisioners": [
+      {
+        "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
+        "remote_path": "/tmp/script.bat",
+        "scripts": [
+          "./scripts/winrm.ps1"
+        ],
+        "type": "powershell"
+      }
+    ],
+    "variables": {
+      "autounattend": "./win_10/Autounattend.xml",
+      "cpus": "2",
+      "disk_size": "61440",
+      "headless": "true",
+      "iso_checksum": "56ab095075be28a90bc0b510835280975c6bb2ce",
+      "iso_checksum_type": "sha1",
+      "iso_url": "http://download.microsoft.com/download/C/3/9/C399EEA8-135D-4207-92C9-6AAB3259F6EF/10240.16384.150709-1700.TH1_CLIENTENTERPRISEEVAL_OEMRET_X64FRE_EN-US.ISO",
+      "memory_size": "2048"
+    }
+  }

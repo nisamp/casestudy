@@ -1,9 +1,10 @@
 [windows]
-192.168.1.7
+192.168.225.39
 
 [windows:vars]
-ansible_user=ansible
-ansible_password=ansible123
+ansible_user=Ansible
+ansible_password=Ansible123
 ansible_port=5986
 ansible_connection=winrm
 ansible_winrm_server_cert_validation=ignore
+ansible_hostname: DESKTOP-V60DDNK

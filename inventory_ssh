@@ -1,6 +1,4 @@
 [windows]
-windows10 ansible_host=192.168.1.7
+192.168.225.39
 
-[windows:vars]
-ansible_ssh_user=ansible
-ansible_ssh_private_key_file=/cygdrive/c/Users/nizam/.ssh/windows
+192.168.225.39 ansible_ssh_private_key_file=/mnt/c/Users/Nisam/win ansible_user=Ansible ansible_shell_type=powershell ansible_hostname=DESKTOP-V6ODDNK

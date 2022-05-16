@@ -1,7 +1,6 @@
-/.gitignore
 *.exe
 *.vdi
 *.iso
 *.iso.lock
-/automate_windows_host/automate_windows_host
+/automate_windows_host/output-virtualbox-iso
 /automate_windows_host/packer_cache

@@ -1,0 +1,48 @@
+{
+    "builders": [
+      {
+        "type": "azure-arm",
+
+        "client_id": "",
+        "client_secret": "",
+        "tenant_id": "",
+        "subscription_id": "",
+        
+        "managed_image_resource_group_name": "choco_vm_grp",
+        "managed_image_name": "ChocoVmImage",
+        "os_type": "Windows",
+        "image_publisher": "MicrosoftWindowsServer",
+        "image_offer": "WindowsServer",
+        "image_sku": "2016-Datacenter",
+
+        "vm_name": "Windows-Ansible-VM",
+        "communicator": "winrm",
+        "winrm_use_ssl": true,
+        "winrm_insecure": true,
+        "winrm_timeout": "5m",
+        "winrm_username": "Ansible",
+        "winrm_password": "Ansible123",
+        "winrm_port": 5985,
+        "boot_wait": "2m",
+
+        "build_resource_group_name": "choco_vm_grp",
+        "vm_size": "Standard_D2_v2",
+        "floppy_files": [
+          "{{user `autounattend`}}"
+        ],
+        "shutdown_command": "shutdown /s /t 10 /f"
+
+      }
+    ],
+    "post-processors": [
+        [
+          {
+            "type": "manifest",
+            "output": "azure_image_output.json"
+          }
+        ]
+      ],
+    "variables": {
+      "autounattend": "./win_10/Autounattend.xml"
+    }
+  }

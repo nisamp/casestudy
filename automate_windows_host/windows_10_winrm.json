@@ -2,6 +2,7 @@
     "builders": [
       {
         "boot_wait": "2m",
+        "communicator": "winrm",
         "disk_size": "{{user `disk_size`}}",
         "floppy_files": [
           "{{user `autounattend`}}"
@@ -12,13 +13,6 @@
         "iso_url": "{{user `iso_url`}}",
         "shutdown_command": "shutdown /s /t 10 /f",
         "type": "virtualbox-iso",
-        "vm_name": "Windows-Ansible-VM",
-        "communicator": "winrm",
-        "winrm_username": "Ansible",
-        "winrm_password": "Ansible123",
-        "winrm_timeout": "2h",
-        "winrm_insecure": true,
-        "winrm_port": 5985,
         "vboxmanage": [
           [
             "modifyvm",
@@ -32,17 +26,13 @@
             "--cpus",
             "{{user `cpus`}}"
           ]
-        ]
-      }
-    ],
-    "provisioners": [
-      {
-        "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
-        "remote_path": "/tmp/script.bat",
-        "scripts": [
-          "./scripts/winrm.ps1"
         ],
-        "type": "powershell"
+        "vm_name": "Windows-Ansible-VM",
+        "winrm_insecure": true,
+        "winrm_password": "Ansible123",
+        "winrm_port": 5985,
+        "winrm_timeout": "2h",
+        "winrm_username": "Ansible"
       }
     ],
     "variables": {

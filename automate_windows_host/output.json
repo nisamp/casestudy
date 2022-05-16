@@ -1,0 +1,23 @@
+{
+  "builds": [
+    {
+      "name": "virtualbox-iso",
+      "builder_type": "virtualbox-iso",
+      "build_time": 1652725506,
+      "files": [
+        {
+          "name": "Windows-Ansible-VM-disk001.vmdk",
+          "size": 4268252160
+        },
+        {
+          "name": "Windows-Ansible-VM.ovf",
+          "size": 6186
+        }
+      ],
+      "artifact_id": "VM",
+      "packer_run_uuid": "f281f16a-d391-8707-7395-c54a2177e7f1",
+      "custom_data": null
+    }
+  ],
+  "last_run_uuid": "f281f16a-d391-8707-7395-c54a2177e7f1"
+}

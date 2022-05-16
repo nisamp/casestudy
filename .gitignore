@@ -2,5 +2,6 @@
 *.vdi
 *.iso
 *.iso.lock
+*.box
 /automate_windows_host/output-virtualbox-iso
 /automate_windows_host/packer_cache

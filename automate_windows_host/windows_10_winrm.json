@@ -11,10 +11,13 @@
         "iso_checksum": "{{user `iso_checksum_type`}}:{{user `iso_checksum`}}",
         "iso_url": "{{user `iso_url`}}",
         "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+        "type": "virtualbox-iso",
+        "vm_name": "Windows-Ansible-VM",
+        "communicator": "ssh",
         "ssh_password": "Ansible123",
         "ssh_timeout": "2h",
         "ssh_username": "Ansible",
-        "type": "virtualbox-iso",
+        "winrm_timeout": "2h",
         "vboxmanage": [
           [
             "modifyvm",

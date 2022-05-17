@@ -31,7 +31,7 @@
         "winrm_insecure": true,
         "winrm_password": "Ansible123",
         "winrm_port": 5985,
-        "winrm_timeout": "2h",
+        "winrm_timeout": "4m",
         "winrm_username": "Ansible"
       }
     ],

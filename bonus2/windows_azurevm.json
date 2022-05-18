@@ -1,0 +1,31 @@
+{
+  "builders": [
+    {
+      "type": "azure-arm",
+      "client_id": "",
+      "client_secret": "",
+      "tenant_id": "",
+      "subscription_id": "",
+
+      "managed_image_resource_group_name": "bonus2RG",
+      "managed_image_name": "bonus2Image",
+
+      "os_type": "Windows",
+      "image_publisher": "MicrosoftWindowsServer",
+      "image_offer": "WindowsServer",
+      "image_sku": "2019-Datacenter",
+      "vm_name": "Windows-Ansible-VM",
+
+      "location": "UAE North",
+      "vm_size": "Standard_D2_v2"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "powershell",
+      "inline": [
+        "Set-ExecutionPolicy AllSigned -Force"
+      ]
+    }
+  ]
+}

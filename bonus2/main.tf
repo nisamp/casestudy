@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "2.93.0"
-    }
-  }
-}
 provider "azurerm" {
   subscription_id = ""
   client_id       = ""
@@ -14,15 +6,59 @@ provider "azurerm" {
   features {}
 }
 
-locals {
-  resource_group = "choco_vm_grp"
-  location       = "Dubai"
+data "azurerm_resource_group" "bonus2" {
+  name = "bonus2RG"
 }
 
-resource "azurerm_public_ip" "choco_vm_ip" {
-  name                = "chocovmip"
-  resource_group_name = azurerm_resource_group.choco_vm_grp.name
-  location            = azurerm_resource_group.choco_vm_grp.location
+output "id" {
+  value = data.azurerm_resource_group.bonus2.id
+}
+
+data "azurerm_image" "bonus2" {
+  name                = "bonus2Image"
+  resource_group_name = "bonus2RG"
+}
+
+output "image_id" {
+  value = "/subscriptions/XXXXXXXX/resourceGroups/RG-EASTUS-SPT-PLATFORM/providers/Microsoft.Compute/images/bonus2Image"
+}
+
+resource "azurerm_network_security_group" "bonus2" {
+  name                = "bonus2-SG"
+  location            = data.azurerm_resource_group.bonus2.location
+  resource_group_name = data.azurerm_resource_group.bonus2.name
+
+  security_rule {
+    name                       = "bonus2-SGR"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "80"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+
+resource "azurerm_virtual_network" "bonus2" {
+  name                = "bonus2-network"
+  address_space       = ["10.0.0.0/16"]
+  location            = data.azurerm_resource_group.bonus2.location
+  resource_group_name = data.azurerm_resource_group.bonus2.name
+}
+
+resource "azurerm_subnet" "bonus2" {
+  name                 = "bonus2-subnet"
+  resource_group_name  = data.azurerm_resource_group.bonus2.name
+  virtual_network_name = azurerm_virtual_network.bonus2.name
+  address_prefixes     = ["10.0.2.0/24"]
+}
+
+resource "azurerm_public_ip" "bonus2" {
+  name                = "bonus2-public-ip"
+  resource_group_name = data.azurerm_resource_group.bonus2.name
+  location            = data.azurerm_resource_group.bonus2.location
   allocation_method   = "Static"
 
   tags = {
@@ -30,69 +66,51 @@ resource "azurerm_public_ip" "choco_vm_ip" {
   }
 }
 
-data "azurerm_subnet" "SubnetA" {
-  name                 = "SubnetA"
-  virtual_network_name = "choco_vm-network"
-  resource_group_name  = local.resource_group
-}
-
-resource "azurerm_resource_group" "choco_vm_grp" {
-  name     = local.resource_group
-  location = local.location
-}
-
-resource "azurerm_virtual_network" "choco_vm_network" {
-  name                = "choco_vm-network"
-  location            = local.location
-  resource_group_name = azurerm_resource_group.choco_vm_grp.name
-  address_space       = ["10.0.0.0/16"]
-
-  subnet {
-    name           = "SubnetA"
-    address_prefix = "10.0.1.0/24"
-  }
-}
-
-resource "azurerm_network_interface" "choco_vm_interface" {
-  name                = "choco_vm-interface"
-  location            = local.location
-  resource_group_name = local.resource_group
+resource "azurerm_network_interface" "bonus2" {
+  name                = "bonus2-nic"
+  location            = data.azurerm_resource_group.bonus2.location
+  resource_group_name = data.azurerm_resource_group.bonus2.name
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = data.azurerm_subnet.SubnetA.id
+    subnet_id                     = azurerm_subnet.bonus2.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.bonus2.id
   }
-
-  depends_on = [
-    azurerm_virtual_network.choco_vm_network
-  ]
 }
 
-resource "azurerm_windows_virtual_machine" "choco_vm" {
-  name                = "chocovm"
-  resource_group_name = local.resource_group
-  location            = local.location
-  size                = "Standard_D2s_v3"
-  admin_username      = "Ansible"
-  admin_password      = "Ansible@123"
-  network_interface_ids = [
-    azurerm_network_interface.choco_vm_interface.id,
-  ]
+resource "azurerm_virtual_machine" "bonus2VM" {
+  name                             = "bonus2VM"
+  location                         = data.azurerm_resource_group.bonus2.location
+  resource_group_name              = data.azurerm_resource_group.bonus2.name
+  network_interface_ids            = ["${azurerm_network_interface.bonus2.id}"]
+  vm_size                          = "Standard_DS12_v2"
+  delete_os_disk_on_termination    = true
+  delete_data_disks_on_termination = true
 
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
+  storage_image_reference {
+    id = "${data.azurerm_image.bonus2.id}"
   }
 
-  source_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = "2019-Datacenter"
-    version   = "latest"
+  storage_os_disk {
+    name              = "bonus2VM-OS"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "Standard_LRS"
+}
+
+  os_profile {
+    computer_name  = "Ansible-VM"
+    admin_username = "Ansible"
+    admin_password = "Ansible123"
   }
 
-  depends_on = [
-    azurerm_network_interface.choco_vm_interface
-  ]
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
+
+  
+  tags = {
+    environment = "Production"
+  }
 }

@@ -5,7 +5,8 @@
         "communicator": "winrm",
         "disk_size": "{{user `disk_size`}}",
         "floppy_files": [
-          "{{user `autounattend`}}"
+          "{{user `autounattend`}}",
+          "./scripts/winrm.ps1"
         ],
         "guest_os_type": "Windows10_64",
         "headless": "{{user `headless`}}",
@@ -31,10 +32,11 @@
         "winrm_insecure": true,
         "winrm_password": "Ansible123",
         "winrm_port": 5985,
-        "winrm_timeout": "4m",
+        "winrm_timeout": "1h",
         "winrm_username": "Ansible"
       }
     ],
+    
     "post-processors": [
         [
           {

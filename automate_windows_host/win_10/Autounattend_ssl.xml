@@ -116,22 +116,16 @@
             </AutoLogon>
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
+                    <CommandLine>cmd.exe /c powershell -Command "Set-ExecutionPolicy AllSigned -Force"</CommandLine>
+                    <Description>Set Execution Policy AllSigned</Description>
                     <Order>1</Order>
-                    <Description>Set Execution Policy 64 Bit</Description>
-                    <CommandLine>cmd.exe /c powershell -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force"</CommandLine>
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
-                <SynchronousCommand wcm:action="add">
+                 <SynchronousCommand wcm:action="add">
+                    <CommandLine>cmd.exe /c wmic useraccount where "name='Ansible'" set PasswordExpires=FALSE</CommandLine>
                     <Order>2</Order>
-                    <Description>Set Execution Policy 32 Bit</Description>
-                    <CommandLine>C:\Windows\SysWOW64\cmd.exe /c powershell -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force"</CommandLine>
-                    <RequiresUserInput>true</RequiresUserInput>
+                    <Description>Disable password expiration for ansible user</Description>
                 </SynchronousCommand>
-                <SynchronousCommand wcm:action="add">
-                    <CommandLine>cmd.exe /c C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\winrm.ps1</CommandLine>
-                    <Description>Enable WinRM</Description>
-                    <Order>3</Order>
-                </SynchronousCommand> 
                 <!-- WITHOUT WINDOWS UPDATES -->
                 <!--
                 <SynchronousCommand wcm:action="add">
@@ -143,11 +137,12 @@
                 -->
                 <!-- END WITHOUT WINDOWS UPDATES -->
                 <!-- WITH WINDOWS UPDATES -->
-                <SynchronousCommand wcm:action="add">
-                    <CommandLine>cmd.exe /c a:\microsoft-updates.bat</CommandLine>
-                    <Order>98</Order>
-                    <Description>Enable Microsoft Updates</Description>
-                </SynchronousCommand>
+               <SynchronousCommand wcm:action="add">
+                    <CommandLine>cmd.exe /c powershell -Command '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 $url = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1" $file = "$env:temp\ConfigureRemotingForAnsible.ps1" (New-Object -TypeName System.Net.WebClient).DownloadFile($url, $file) powershell.exe -ExecutionPolicy ByPass -File $file'</CommandLine>
+                    <Description>Win RM https connection</Description>
+                    <Order>1</Order>
+                    <RequiresUserInput>true</RequiresUserInput>
+                </SynchronousCommand> 
                 <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\win-updates.ps1</CommandLine>
                     <Description>Install Windows Updates</Description>

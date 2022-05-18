@@ -29,12 +29,12 @@ resource "azurerm_network_security_group" "bonus2" {
   resource_group_name = data.azurerm_resource_group.bonus2.name
 
   security_rule {
-    name                       = "bonus2-SGR"
+    name                       = "bonus2-SSH"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
-    source_port_range          = "80"
+    source_port_range          = "22"
     destination_port_range     = "*"
     source_address_prefix      = "*"
     destination_address_prefix = "*"

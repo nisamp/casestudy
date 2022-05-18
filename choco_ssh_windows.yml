@@ -1,15 +1,21 @@
 - name: Install Chocolatey/SSH/Git
   hosts: windows
-  gather_facts: false
+  gather_facts: true
   tasks:
     - name: Install Chocolatey Windows Package Manager
       win_chocolatey:
         name: chocolatey
-        state: present  
+        state: present
+
+    - name: Upgrade installed packages
+      win_chocolatey:
+        name: all
+        state: latest
 
     - name: Install Git using Chocolatey
       win_chocolatey:
         name: git
+        version: "2.36.0"
         state: present
 
     - name: Install openssh
@@ -24,27 +30,27 @@
         name: DefaultShell
         data: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
         type: string
-        state: present  
+        state: present
 
     - name: Enable PubkeyAuthentication yes in sshd_config
       win_lineinfile:
         path: '%ProgramData%\ssh\sshd_config'
-        regexp: '#PubkeyAuthentication yes'
-        line: 'PubkeyAuthentication yes'
+        regexp: "#PubkeyAuthentication yes"
+        line: "PubkeyAuthentication yes"
 
     - name: StrictModes no in sshd_config
       win_lineinfile:
         path: '%ProgramData%\ssh\sshd_config'
-        regexp: '#StrictModes yes'
-        line: 'StrictModes no'
+        regexp: "#StrictModes yes"
+        line: "StrictModes no"
 
-    - name: Configure and enable SSH on standard port 
+    - name: Configure and enable SSH on standard port
       win_firewall_rule:
-       name: OpenSSH
-       localport: 22
-       action: allow
-       direction: in
-       protocol: tcp
+        name: OpenSSH
+        localport: 22
+        action: allow
+        direction: in
+        protocol: tcp
 
     - name: Generate administrators_authorized_keys file
       win_lineinfile:
@@ -64,11 +70,11 @@
 
     - name: Allow Administrators & SYSTEM to access the file
       win_acl:
-       path: C:\ProgramData\ssh\administrators_authorized_keys
-       user: "{{ item }}"
-       rights: FullControl
-       type: allow
-       state: present
+        path: C:\ProgramData\ssh\administrators_authorized_keys
+        user: "{{ item }}"
+        rights: FullControl
+        type: allow
+        state: present
       with_items:
-       - SYSTEM
-       - "{{ ansible_hostname }}\\Administrators"    
+        - SYSTEM
+        - "{{ ansible_hostname }}\\Administrators"

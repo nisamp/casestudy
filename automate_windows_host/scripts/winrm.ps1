@@ -15,5 +15,6 @@ netsh advfirewall firewall set rule name="Windows Remote Management (HTTP-In)" n
 Set-Service winrm -startuptype "auto"
 Restart-Service winrm
 
+Set-ExecutionPolicy Bypass -Scope Process -Force
 Enable-PSRemoting -SkipNetworkProfileCheck -Force
 Set-NetConnectionProfile -NetworkCategory Private

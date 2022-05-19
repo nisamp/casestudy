@@ -55,7 +55,7 @@
     - name: Generate administrators_authorized_keys file
       win_lineinfile:
         path: '%ProgramData%\ssh\administrators_authorized_keys'
-        line: "{{ lookup('file', '/mnt/c/Users/Nisam/win.pub') }}"
+        line: "{{ lookup('file', '/home/nisam/.ssh/casestudy.pub') }}"
         create: Yes
 
     - name: Remove any other permission entires from administrators_authorized_keys

@@ -1,4 +1,4 @@
 [windows]
-192.168.225.211
+192.168.56.3
 
-192.168.225.211 ansible_ssh_private_key_file=/mnt/c/Users/Nisam/win ansible_user=Ansible ansible_shell_type=powershell ansible_hostname=ansible-10
+192.168.56.3 ansible_ssh_private_key_file=/home/nisam/.ssh/casestudy ansible_user=Ansible ansible_shell_type=powershell ansible_hostname=ansible-10

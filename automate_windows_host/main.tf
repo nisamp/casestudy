@@ -9,7 +9,7 @@ terraform {
 
 provider "virtualbox" {
   delay      = 60
-  mintimeout = 10
+  mintimeout = 30
 }
 
 resource "virtualbox_vm" "casestudy" {
@@ -19,11 +19,15 @@ resource "virtualbox_vm" "casestudy" {
   memory = "2048 mib"
 
   network_adapter {
+    type           = "nat"
+  }
+
+  network_adapter {
     type           = "hostonly"
     host_interface = "VirtualBox Host-Only Ethernet Adapter"
   }
 }
 
-output "IPAddress" {
+output "IPAddr" {
   value = element(virtualbox_vm.casestudy.*.network_adapter.0.ipv4_address, 1)
 }

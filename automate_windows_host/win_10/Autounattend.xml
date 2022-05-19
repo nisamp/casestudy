@@ -132,6 +132,18 @@
                     <Description>Enable WinRM</Description>
                     <Order>3</Order>
                 </SynchronousCommand> 
+                <SynchronousCommand wcm:action="add">
+                    <Order>4</Order>
+                    <Description>PSRemoting</Description>
+                    <CommandLine>C:\Windows\SysWOW64\cmd.exe /c powershell -Command "Enable-PSRemoting -SkipNetworkProfileCheck -Force"</CommandLine>
+                    <RequiresUserInput>true</RequiresUserInput>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <Order>5</Order>
+                    <Description>NetConnectionProfile</Description>
+                    <CommandLine>C:\Windows\SysWOW64\cmd.exe /c powershell -Command "Set-NetConnectionProfile -NetworkCategory Private"</CommandLine>
+                    <RequiresUserInput>true</RequiresUserInput>
+                </SynchronousCommand>
                 <!-- WITHOUT WINDOWS UPDATES -->
                 <!--
                 <SynchronousCommand wcm:action="add">

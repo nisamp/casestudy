@@ -1,5 +1,5 @@
 [windows]
-192.168.225.211
+192.168.225.248
 
 [windows:vars]
 ansible_user=Ansible

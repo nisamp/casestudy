@@ -6,9 +6,8 @@ pipeline{
         stage('Packer Image Build'){
           steps{
             dir("automate_windows_host") {
-              echo $PATH;
-             /* sh "packer validate windows_10_winrm.json"
-              sh "packer build windows_10_winrm.json"*/
+              sh "packer validate windows_10_winrm.json"
+              sh "packer build windows_10_winrm.json"
             }
           }
         }
@@ -16,8 +15,8 @@ pipeline{
         stage('Terraform Apply'){
           steps{
             dir("automate_windows_host") {
-             /* sh "terraform init"
-              sh "terraform apply -auto-approve"*/
+              sh "terraform init"
+              sh "terraform apply -auto-approve"
             }
           }
         }

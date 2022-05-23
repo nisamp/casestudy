@@ -3,14 +3,14 @@ pipeline{
 
     stages{
 
-        stage('Packer Image Build'){
+       /* stage('Packer Image Build'){
           steps{
             dir("automate_windows_host") {
               bat "packer validate windows_10_winrm.json"
               bat "packer build windows_10_winrm.json"
             }
           }
-        }
+        }*/
 
         stage('Terraform Apply'){
           steps{

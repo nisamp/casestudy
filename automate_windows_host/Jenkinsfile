@@ -15,8 +15,8 @@ pipeline{
         stage('Terraform Apply'){
           steps{
             dir("automate_windows_host") {
-            def tfHome = tool name: 'Terraform', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
-            env.Path = "${tfHome};${env.Path}"
+              PowerShell("terraform --version") 
+              bat "terraform --version"
               bat "terraform init"
               bat "terraform apply -auto-approve"
             }

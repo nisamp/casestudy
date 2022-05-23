@@ -15,7 +15,7 @@ pipeline{
         stage('Terraform Apply'){
           steps{
             dir("automate_windows_host") {
-              PowerShell("terraform --version") 
+              powershell 'terraform --version'
               bat "terraform --version"
               bat "terraform init"
               bat "terraform apply -auto-approve"
